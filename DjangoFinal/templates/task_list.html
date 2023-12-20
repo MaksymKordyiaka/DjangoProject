@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Список завдань{% endblock %}
+{% block content %}
+<h1>Список завдань</h1>
+<ul>
+    {% for task in tasks %}
+        <li class="task-item">
+            <h3>
+                Завдання: {{ task.title }}
+                <br>
+                Створено: {{ task.created_at|date:"d.m.Y, H:i" }} <br>
+                Дедлайн: {{ task.due_date|date:"d.m.Y, H:i" }} <br>
+                Пріоритет: {{ task.get_priority_display }} <br>
+                {% if task.completed %}
+                    <span class="status completed">Виконано</span>
+                {% else %}
+                    <span class="status pending">Не виконано</span>
+                {% endif %}
+            </h3>
+            <a href="{% url 'edit_task' id=task.id %}" class="edit-link">Змінити</a>
+        </li>
+    {% endfor %}
+</ul>
+<div class="pagination">
+    <span class="step-links">
+        {% if tasks.has_previous %}
+            <a href="?page=1" class="pagination-link">&laquo; перша</a>
+            <a href="?page={{ tasks.previous_page_number }}" class="pagination-link">попередня</a>
+        {% endif %}
+        <span class="current">
+            Сторінка {{ tasks.number }} з {{ tasks.paginator.num_pages }}.
+        </span>
+        {% if tasks.has_next %}
+            <a href="?page={{ tasks.next_page_number }}" class="pagination-link">наступна &raquo;</a>
+            <a href="?page={{ tasks.paginator.num_pages }}" class="pagination-link">остання &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}

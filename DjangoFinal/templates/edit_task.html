@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Edit Task{% endblock %}
+{% block content %}
+    <h1>Змінити завдання</h1>
+    <form method="post" action="{% url 'edit_task' id=task.id %}?next={% url 'task_list' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save-changes-btn">Зберегти</button>
+    </form>
+    <form method="post" action="{% url 'delete_task' id=task.id %}" class="delete-form">
+        {% csrf_token %}
+        <button type="submit" class="delete-btn">Видалити</button>
+    </form>
+{% endblock %}
